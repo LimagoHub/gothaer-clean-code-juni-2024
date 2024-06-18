@@ -3,6 +3,8 @@ package de.gothaer.application;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,6 +15,11 @@ public class Main {
             //
 
         }
+
+
+        IntStream stream = IntStream.of(10,20,30);
+
+        stream.filter(z->z>10);
 
 
         final int [] data = new int[Integer.MAX_VALUE / 2];
