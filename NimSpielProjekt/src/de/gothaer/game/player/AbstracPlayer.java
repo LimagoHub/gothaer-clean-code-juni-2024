@@ -1,10 +1,10 @@
 package de.gothaer.game.player;
 
-public abstract class AbstracPlayer implements Player {
+public abstract class AbstracPlayer<BOARD,TURN> implements Player<BOARD,TURN> {
 
     private String name = getClass().getSimpleName();
 
-    public AbstracPlayer() {
+    protected AbstracPlayer() {
     }
 
     public AbstracPlayer(final String name) {

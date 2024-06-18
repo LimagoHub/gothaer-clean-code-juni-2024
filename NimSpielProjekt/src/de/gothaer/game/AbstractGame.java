@@ -1,6 +1,5 @@
 package de.gothaer.game;
 
-import de.gothaer.game.nimgame.player.NimGamePlayer;
 import de.gothaer.game.player.Player;
 import de.gothaer.io.Writer;
 
@@ -17,7 +16,7 @@ public abstract  class AbstractGame<BOARD, TURN>  implements Game{
     private TURN turn;
 
 
-    public AbstractGame(final Writer writer) {
+    protected AbstractGame(final Writer writer) {
         this.writer = writer;
 
     }
@@ -57,6 +56,8 @@ public abstract  class AbstractGame<BOARD, TURN>  implements Game{
     public void removePlayer(final Player<BOARD,TURN>  player) {
         players.remove(player);
     }
+
+
     @Override
     public void play() {
         while( ! isGameover()) {
@@ -83,6 +84,7 @@ public abstract  class AbstractGame<BOARD, TURN>  implements Game{
     }
 
     private void printGameOverMessageIfGameIsOver() { // Operation
+
         if(isGameover()) {
             write(getCurrentPlayer().getName() + " hat verloren");
         }
@@ -91,6 +93,7 @@ public abstract  class AbstractGame<BOARD, TURN>  implements Game{
 
 
     private void executeTurn() {
+
 
         do {
             turn = getCurrentPlayer().doTurn(board);
