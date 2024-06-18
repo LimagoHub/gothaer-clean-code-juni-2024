@@ -1,4 +1,4 @@
-package de.gothaer.application.client.inner;
+package de.gothaer.application.client.internal;
 
 
 import de.gothaer.application.client.Client;
