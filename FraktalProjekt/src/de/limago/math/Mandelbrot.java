@@ -2,7 +2,7 @@ package de.limago.math;
 
 public class Mandelbrot {
 	
-	private static final int MAXITER = 255; 
+
 	
 	private Complex linkeUntereEcke;
 	private double breite;
@@ -22,6 +22,7 @@ public class Mandelbrot {
 	}
 	
 	public int iterate(Complex c) {
+		final int MAXITER = 255;
 		int retval = 0;
 		Complex z = new Complex();
 		while(z.abs() < 2 ) {

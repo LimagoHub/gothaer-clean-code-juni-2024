@@ -2,8 +2,6 @@ package de.limago.math;
 
 public class Newton {
 
-	private static final int MAXITER = 255;
-
 	private Complex linkeUntereEcke;
 	private double breite;
 
