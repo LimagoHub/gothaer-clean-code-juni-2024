@@ -1,21 +1,17 @@
 package de.gothaer.application.bootstrap;
 
+
 import de.gothaer.application.client.Client;
 import de.gothaer.application.client.internal.ClientImpl;
 import de.gothaer.application.container.IntArrayFiller;
 import de.gothaer.application.container.internal.decorator.IntArrayFillerBenchmarkDecorator;
-import de.gothaer.application.container.internal.decorator.IntArrayFillerLoggerDecorator;
+import de.gothaer.application.container.internal.parallel.IntArrayFillerParallelImpl;
 import de.gothaer.application.container.internal.sequential.IntArrayFillerSequentialImpl;
-import de.gothaer.application.generator.IntGenerator;
 import de.gothaer.application.generator.IntGeneratorBuilder;
 import de.gothaer.application.generator.internal.random.RandomGeneratorBuilderImpl;
-import de.gothaer.application.generator.internal.random.RandomNumberGenerator;
 import de.gothaer.application.time.internal.StopwatchImpl;
 
 public class Bootstrap {
-
-    private boolean logger = false;
-    private boolean benchmark = true;
 
     public void startApplication() {
         for (int treadCount = 1; treadCount <= Runtime.getRuntime().availableProcessors() + 1; treadCount++) {
@@ -27,24 +23,25 @@ public class Bootstrap {
 
         System.out.print("Running with " + treadCount + " threads...");
 
-        IntGenerator generator = createIntGenerator();
-        IntArrayFiller arrayFiller = createIntFiller(generator, treadCount);
+        IntGeneratorBuilder generatorBuilder = createIntGeneratorBuilder();
+        IntArrayFiller arrayFiller = createIntFiller(generatorBuilder, treadCount);
         Client client = createClient(arrayFiller);
         client.doSomethingWithLargeArray();
 
     }
 
-    private static IntGenerator createIntGenerator() {
-        return new RandomNumberGenerator();
+    private static IntGeneratorBuilder createIntGeneratorBuilder() {
+        return new RandomGeneratorBuilderImpl();
     }
 
-    private IntArrayFiller createIntFiller(IntGenerator generator, final int treadCount) {
+    private static IntArrayFiller createIntFiller(IntGeneratorBuilder generatorBuilder, final int treadCount) {
         IntArrayFiller result;
+        if(treadCount == 1)
+            result = new IntArrayFillerSequentialImpl(generatorBuilder.create());
+        else
+            result = new IntArrayFillerParallelImpl(treadCount, generatorBuilder);
 
-        result = new IntArrayFillerSequentialImpl(generator);
-
-        if(logger) result = new IntArrayFillerLoggerDecorator(result);
-        if(benchmark) result = new IntArrayFillerBenchmarkDecorator(result, new StopwatchImpl());
+        result = new IntArrayFillerBenchmarkDecorator(result, new StopwatchImpl());
         return result;
     }
 
@@ -52,4 +49,5 @@ public class Bootstrap {
         return new ClientImpl(arrayFiller);
 
     }
+
 }

@@ -6,7 +6,7 @@ import de.gothaer.application.container.IntArrayFiller;
 
 public class ClientImpl implements Client {
 
-    private int field[] = new int[Integer.MAX_VALUE / 32];
+    private int field[] = new int[Integer.MAX_VALUE / 8];
     private final IntArrayFiller arrayFiller;
 
     public ClientImpl(IntArrayFiller arrayFiller) {
